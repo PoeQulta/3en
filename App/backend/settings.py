@@ -27,7 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-REACT_APP_BUILD_PATH = "frontend\\build"
+REACT_APP_BUILD_PATH = "frontend/build"
 # Application definition
 
 INSTALLED_APPS = [
