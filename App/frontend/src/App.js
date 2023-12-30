@@ -1,25 +1,42 @@
 import logo from './logo.svg';
 import './App.css';
+import setAuthToken from './ApiConsumptionMethods/setTokenAuth.js'
 
+import React from "react";
+import { Navigate, Routes, Route, Router } from "react-router-dom";
+import RouteGuard from "./components/RouteGuard";
+//history
+import { history } from './helpers/history';
+ 
+//pages
+import HomePage from "./pages/HomePage"
+import LoginPage from "./pages/LoginPage"
+ 
+import * as ReactDOM from "react-dom/client";
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <RouteGuard component={HomePage} />
+  },
+  {
+    path: "/login",
+    element: <LoginPage />,
+  },
+]);
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  const token = localStorage.getItem("token");
+  if (token) {
+      setAuthToken(token);
+  }
+return(
+  <React.StrictMode>
+    <RouterProvider router={router} />
+  </React.StrictMode>
+);
 }
 
 export default App;
