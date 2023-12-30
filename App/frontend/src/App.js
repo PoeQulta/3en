@@ -11,6 +11,8 @@ import { history } from './helpers/history';
 //pages
 import HomePage from "./pages/HomePage"
 import LoginPage from "./pages/LoginPage"
+import RegisterPage from "./pages/RegisterPage"
+
  
 import * as ReactDOM from "react-dom/client";
 import {
@@ -25,6 +27,10 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <LoginPage />,
+  },
+  {
+    path: "/register",
+    element: <RegisterPage />,
   },
 ]);
 function App() {
