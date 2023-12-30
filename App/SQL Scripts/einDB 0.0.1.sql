@@ -39,3 +39,14 @@ ADD CONSTRAINT customer_user_customer_info FOREIGN KEY(customer_dln) REFERENCES 
 ADD CONSTRAINT user_user_customer_info FOREIGN KEY(user_id) REFERENCES auth_user(id),
 ADD CONSTRAINT unique_user UNIQUE(user_id),
 ADD CONSTRAINT unique_dln UNIQUE(customer_dln);
+
+
+CREATE TABLE car_img
+(
+	img_id	int	PRIMARY KEY auto_increment,
+	car_id varchar(50)	NOT NULL,
+    img_url	varchar(500) NOT NULL
+);
+ALTER TABLE car_img
+ADD CONSTRAINT car_img FOREIGN KEY(car_id) REFERENCES car(plate_id),
+ADD CONSTRAINT unique_car_img UNIQUE(car_id,img_url);

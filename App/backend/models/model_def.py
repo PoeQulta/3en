@@ -29,6 +29,16 @@ class Car(models.Model):
         managed = False
         db_table = 'car'
 
+class CarImg(models.Model):
+    img_id = models.AutoField(primary_key=True)
+    car = models.ForeignKey(Car, models.DO_NOTHING)
+    img_url = models.CharField(max_length=500)
+
+    class Meta:
+        managed = False
+        db_table = 'car_img'
+        unique_together = (('car', 'img_url'),)
+        
 class CarStatus(models.Model):
     status_id = models.IntegerField(primary_key=True)
     status_date = models.DateField()
