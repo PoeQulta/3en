@@ -8,16 +8,16 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.contrib.auth.models import User
-from backend.serializers import RegistrationSerializer
+from backend.serializers import RegistrationSerializer,CustomerSerializer
 from rest_framework import serializers
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework import permissions
 from rest_framework import generics
 from rest_framework import filters
-from backend.serializers import CarSerializer
-from backend.models.model_def import Car
+from backend.serializers import CarSerializer,Car,Customer
 import django_filters.rest_framework
+from django_filters import DateFromToRangeFilter
 
 def serve_react(request, path, document_root=None):
     path = posixpath.normpath(path).lstrip("/")
@@ -86,4 +86,33 @@ class CarSearchView(generics.ListAPIView):
         'office_id':['exact']
         }
     ordering_fields = ['year_made', 'rate']
-       
+
+class CarSearchView(generics.ListAPIView):
+    queryset = Car.objects.all()
+    serializer_class = CarSerializer
+    filter_backends = [django_filters.rest_framework.DjangoFilterBackend, filters.OrderingFilter]
+    filterset_fields = {
+        'model': ['exact'],
+        'color':['exact'],
+        'car_type':['exact'],
+        'year_made':['gt','lt','exact'],
+        'rate':['gt','lt','exact'],
+        'office_id':['exact']
+        }
+    ordering_fields = ['year_made', 'rate']    
+
+class CustomerSearchView(generics.ListAPIView):
+   
+    queryset = Customer.objects.all()
+    serializer_class = CustomerSerializer
+    filter_backends = [django_filters.rest_framework.DjangoFilterBackend, filters.OrderingFilter]
+    filterset_fields = {
+      
+            'dln': ['exact'],
+            'fname':['exact'],
+            'lname':['exact'],
+            'city':['exact'],
+            'date_joined':['gt', 'lt', 'exact']
+        }
+    ordering_fields = ['date_joined']    
+              

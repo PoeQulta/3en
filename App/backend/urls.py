@@ -14,11 +14,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
-#alooooooo
+
 from django.contrib import admin
 from django.urls import path, re_path
 from django.conf import settings
-from backend.views import serve_react , RegistrationView , CarSearchView
+from backend.views import serve_react , RegistrationView , CarSearchView,CustomerSearchView
 from backend.api.example import ExampleView
 from rest_framework.authtoken import views
 urlpatterns = [
@@ -26,6 +26,7 @@ urlpatterns = [
     path("api/auth/",views.obtain_auth_token),
     path("api/register/",RegistrationView.as_view()),
     path("api/cars/search/", CarSearchView.as_view()),
-
+    path("api/customers/search/", CustomerSearchView.as_view()),
+    
     re_path(r"^(?P<path>.*)$", serve_react, {"document_root": settings.REACT_APP_BUILD_PATH}),
 ]

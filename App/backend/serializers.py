@@ -2,6 +2,7 @@
 from django.contrib.auth.models import User
 from backend.models.model_def import Car
 from backend.models.model_def import Office
+from backend.models.model_def import Customer
 from rest_framework import serializers
 
 
@@ -37,6 +38,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
         )
 
         return user
+    
 class OfficeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Office
@@ -58,4 +60,16 @@ class CarSerializer(serializers.ModelSerializer):
             'rate',
             'office'
         ]    
-    
+
+class CustomerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Customer
+        fields = [
+            'dln',
+            'fname',
+            'lname',
+            'street',
+            'city',
+            'zip_code',
+            'date_joined',
+        ]    
