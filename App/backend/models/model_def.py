@@ -7,6 +7,7 @@
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
 from django.contrib.auth.models import User
+import datetime
 class Billing(models.Model):
     billing_num = models.AutoField(primary_key=True)
     due_date = models.DateTimeField()
@@ -21,9 +22,10 @@ class Car(models.Model):
     plate_id = models.CharField(primary_key=True, max_length=50)
     car_type = models.CharField(max_length=50)
     model = models.CharField(max_length=50)
-    year_made = models.TextField()  # This field type is a guess.
+    year_made = models.IntegerField(choices=[(r,r) for r in range(1984, datetime.date.today().year+1)], default=datetime.date.today().year)  # This field type is a guess.
     color = models.CharField(max_length=50)
     rate = models.DecimalField(max_digits=10, decimal_places=2)
+    office = models.ForeignKey('Office', models.DO_NOTHING)
 
     class Meta:
         managed = False

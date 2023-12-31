@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     'rest_framework',
     'corsheaders',
-    'rest_framework.authtoken'
+    'rest_framework.authtoken',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -81,9 +82,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'einDB',
-        'USER': 'ein',
-        'PASSWORD': 'ein',
-        'HOST': 'localhost',
+        'USER': 'root',
+        'PASSWORD': '',
+        'HOST': '127.0.0.1',
         'PORT': '',
     }
 }
@@ -117,7 +118,8 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.AllowAny',
         # 'rest_framework.permissions.IsAuthenticated',
         # 'rest_framework.permissions.IsAdminUser',
-     ]
+     ],
+     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
 
 # Internationalization

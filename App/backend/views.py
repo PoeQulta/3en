@@ -13,6 +13,11 @@ from rest_framework import serializers
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework import permissions
+from rest_framework import generics
+from rest_framework import filters
+from backend.serializers import CarSerializer
+from backend.models.model_def import Car
+import django_filters.rest_framework
 
 def serve_react(request, path, document_root=None):
     path = posixpath.normpath(path).lstrip("/")
@@ -67,3 +72,18 @@ class RegistrationView(APIView):
                 "status": f"{status.HTTP_203_NON_AUTHORITATIVE_INFORMATION} NON AUTHORITATIVE INFORMATION",
             }
         )
+
+class CarSearchView(generics.ListAPIView):
+    queryset = Car.objects.all()
+    serializer_class = CarSerializer
+    filter_backends = [django_filters.rest_framework.DjangoFilterBackend, filters.OrderingFilter]
+    filterset_fields = {
+        'model': ['exact'],
+        'color':['exact'],
+        'car_type':['exact'],
+        'year_made':['gt','lt','exact'],
+        'rate':['gt','lt','exact'],
+        'office_id':['exact']
+        }
+    ordering_fields = ['year_made', 'rate']
+       
