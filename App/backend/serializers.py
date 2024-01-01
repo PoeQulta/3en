@@ -4,7 +4,28 @@ from backend.models.model_def import Car
 from backend.models.model_def import Office
 from backend.models.model_def import Customer
 from rest_framework import serializers
-
+from backend.models.model_def import Customer, Reservation
+class ReservationSerializer(serializers.ModelSerializer):
+   class Meta:
+        model = Reservation
+        fields = [
+            "customer_dln", 
+            "car", 
+            "pickup_date", 
+            "return_date", 
+        ] 
+class CustomerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Customer
+        fields = [
+            "dln", 
+            "fname", 
+            "lname", 
+            "street", 
+            "city", 
+            "zip_code", 
+            "date_joined"
+        ]
 
 class RegistrationSerializer(serializers.ModelSerializer):
     class Meta:

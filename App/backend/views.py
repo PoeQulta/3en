@@ -8,7 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.contrib.auth.models import User
-from backend.serializers import RegistrationSerializer,CustomerSerializer
+from backend.serializers import RegistrationSerializer,ReservationSerializer, CustomerSerializer
 from rest_framework import serializers
 from rest_framework import status
 from rest_framework.authtoken.models import Token
@@ -17,7 +17,10 @@ from rest_framework import generics
 from rest_framework import filters
 from backend.serializers import CarSerializer,Car,Customer
 import django_filters.rest_framework
-
+from backend.models.model_def import UserCustomerInfo
+from backend.models.model_def import Customer,Reservation
+from rest_framework.authentication import TokenAuthentication
+from backend.permissions import IsStaffUser
 
 def serve_react(request, path, document_root=None):
     path = posixpath.normpath(path).lstrip("/")
@@ -117,3 +120,108 @@ class CustomerSearchView(generics.ListAPIView):
         }
     ordering_fields = ['date_joined']    
               
+class ReserveCustomerView(APIView):
+    authentication_classes=[TokenAuthentication]
+    permission_classes=[IsAuthenticated]
+    def get(self, request, *args, **kwargs):
+        user_id = request.user.id
+        customerInfo = UserCustomerInfo.objects.get(user=user_id)
+        userReservations = Reservation.objects.filter(customer_dln=customerInfo.customer_dln).all()
+        reservationSerializer = ReservationSerializer(userReservations, many=True)
+        return Response(reservationSerializer.data)
+    def post(self, request, *args, **kwargs):
+        user_id = request.user.id
+        customerInfo = UserCustomerInfo.objects.get(user=user_id)
+        request.data["customer_dln"] = customerInfo.customer_dln.dln
+        reservationSerializer = ReservationSerializer(data=request.data)
+        if reservationSerializer.is_valid():
+            reservation = reservationSerializer.save()
+            return Response(
+                {
+                    "status": {
+                            "message": "Reservation created",
+                            "code": f"{status.HTTP_200_OK} OK",
+                        }
+                }
+            )
+        else:
+             return Response(
+                {
+                    "error": reservationSerializer.errors,
+                    "status": {
+                            "message": "Reservation created",
+                            "code": f"{status.HTTP_500_INTERNAL_SERVER_ERROR} INTERNAL SERVER ERROR",
+                        }
+                }
+            )
+
+class ReserveStaffView(APIView):
+    authentication_classes=[TokenAuthentication]
+    permission_classes=[IsAuthenticated, IsStaffUser]
+    def get(self, request, *args, **kwargs):
+        userReservations = Reservation.objects.all()
+        reservationSerializer = ReservationSerializer(userReservations, many=True)
+        return Response(reservationSerializer.data)
+    def post(self, request, *args, **kwargs):
+        reservationSerializer = ReservationSerializer(data=request.data)
+        if reservationSerializer.is_valid():
+            reservation = reservationSerializer.save()
+            return Response(
+                {
+                    "status": {
+                            "message": "Reservation created",
+                            "code": f"{status.HTTP_200_OK} OK",
+                        }
+                }
+            )
+        else:
+             return Response(
+                {
+                    "error": reservationSerializer.errors,
+                    "status": {
+                            "message": "Serializer Error",
+                            "code": f"{status.HTTP_500_INTERNAL_SERVER_ERROR} INTERNAL SERVER ERROR",
+                        }
+                }
+            )
+class CustomerInfoView(APIView):
+    authentication_classes=[TokenAuthentication]
+    permission_classes=[IsAuthenticated]
+    def get(self, request, *args, **kwargs):
+        user_id = request.user.id
+        customerInfo = UserCustomerInfo.objects.get(user=user_id)
+        customerSerializer = CustomerSerializer(customerInfo.customer_dln)
+        return Response(customerSerializer.data)
+    def post(self, request, *args, **kwargs):
+        customerSerializer = CustomerSerializer(data=request.data)
+        user_id = request.user.id
+        try:
+            prevCustomerInfo = UserCustomerInfo.objects.get(user=user_id)
+            customer = prevCustomerInfo.customer_dln
+            prevCustomerInfo.delete()
+            customer.delete()
+        except:
+            prevCustomerInfo = None
+        if customerSerializer.is_valid():
+            customer = customerSerializer.save()
+            uci = UserCustomerInfo(customer_dln=customer,user = request.user)
+            uci.save()
+            return Response(
+                {
+                    "status": {
+                            "message": "Customer Info created",
+                            "code": f"{status.HTTP_200_OK} OK",
+                        }
+                }
+            )
+
+        else:
+            return Response(
+                {
+                    "error": customerSerializer.errors,
+                    "status":{
+                            "message": " Serializer Error",
+                            "code": f"{status.HTTP_500_INTERNAL_SERVER_ERROR} INTERNAL SERVER ERROR",
+                        }
+                }
+            )
