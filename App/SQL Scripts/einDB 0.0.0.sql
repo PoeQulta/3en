@@ -14,7 +14,7 @@ car_type	varchar(50)	NOT NULL,
 model	varchar(50) NOT NULL,
 year_made	year	NOT NULL,
 color	varchar(50) NOT NULL,
-rate	DECIMAL(10,2) NOT NULL	 
+rate	DECIMAL(10,2) NOT NULL
 );
 CREATE TABLE reservation
 (
