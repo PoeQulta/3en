@@ -8,6 +8,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 import datetime
+
 class Billing(models.Model):
     billing_num = models.AutoField(primary_key=True)
     due_date = models.DateTimeField()
@@ -19,10 +20,18 @@ class Billing(models.Model):
         db_table = 'billing'
 
 class Car(models.Model):
+    CAR_TYPE_CHOICES = [
+        ('sedan', 'Sedan'),
+        ('suv', 'SUV'),
+        ('hatchback', 'Hatchback'),
+        ('mini_van', 'Mini Van'),
+    ]
+
     plate_id = models.CharField(primary_key=True, max_length=50)
-    car_type = models.CharField(max_length=50)
+    car_type = models.CharField(max_length=50, choices=CAR_TYPE_CHOICES)
     model = models.CharField(max_length=50)
-    year_made = models.IntegerField(choices=[(r,r) for r in range(1984, datetime.date.today().year+1)], default=datetime.date.today().year)  # This field type is a guess.
+    year_made = models.IntegerField(choices=[(r, r) for r in range(1984, datetime.date.today().year + 1)],
+                                     default=datetime.date.today().year)
     color = models.CharField(max_length=50)
     rate = models.DecimalField(max_digits=10, decimal_places=2)
     office = models.ForeignKey('Office', models.DO_NOTHING)
@@ -30,6 +39,7 @@ class Car(models.Model):
     class Meta:
         managed = False
         db_table = 'car'
+
 
 class CarImg(models.Model):
     img_id = models.AutoField(primary_key=True)
