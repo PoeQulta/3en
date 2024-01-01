@@ -2,9 +2,15 @@
 /* CarRentalPage.css */
 
 /* Add a background color and adjust text color */
+body, html {
+  height: 100%;
+  margin: 0;
+}
+
 body {
-  background-color: #f8f9fa;
-  color: #343a40;
+  background-image: url('./images/searchbackground.jpeg');  /* Replace with your image URL */
+  background-size: cover;
+  background-position: center;
 }
 
 .car-rental-container {
@@ -14,8 +20,30 @@ body {
 }
 
 .header {
-  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 20px;
+}
+
+.button-container {
+  display: flex;
+  gap: 10px;
+  margin-left: auto; /* This will push the buttons to the right */
+}
+
+.custom-button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+
+.custom-button:hover {
+  background-color: #0056b3;
 }
 
 .search-container {
