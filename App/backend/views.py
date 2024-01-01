@@ -13,11 +13,15 @@ from rest_framework import serializers
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework import permissions
+from rest_framework import generics
+from rest_framework import filters
+from backend.serializers import CarSerializer,Car,Customer
+import django_filters.rest_framework
 from backend.models.model_def import UserCustomerInfo
 from backend.models.model_def import Customer,Reservation
 from rest_framework.authentication import TokenAuthentication
 from backend.permissions import IsStaffUser
-from rest_framework import generics
+
 def serve_react(request, path, document_root=None):
     path = posixpath.normpath(path).lstrip("/")
     fullpath = Path(safe_join(document_root, path))
@@ -72,6 +76,50 @@ class RegistrationView(APIView):
             }
         )
 
+class CarSearchView(generics.ListAPIView):
+    queryset = Car.objects.all()
+    serializer_class = CarSerializer
+    filter_backends = [django_filters.rest_framework.DjangoFilterBackend, filters.OrderingFilter]
+    filterset_fields = {
+        'model': ['exact'],
+        'color':['exact'],
+        'car_type':['exact'],
+        'year_made':['gt','lt','exact'],
+        'rate':['gt','lt','exact'],
+        'office_id':['exact']
+        }
+    ordering_fields = ['year_made', 'rate']
+
+ 
+
+class CustomerSearchView(generics.ListAPIView):
+   
+    queryset = Customer.objects.all()
+    serializer_class = CustomerSerializer
+    filter_backends = [django_filters.rest_framework.DjangoFilterBackend, filters.OrderingFilter]
+    # for user in User.objects.all():
+    #         if not user:
+    #             break
+    #         else:
+    #             try:
+    #                 Token.objects.get(user_id=user.id)
+    #             except Token.DoesNotExist:
+    #                 Token.objects.create(user=user)
+
+    # if serializer_class.is_valid():
+    #         user = serializer_class.save()
+    #         token = Token.objects.create(user=user)
+    
+    filterset_fields = {
+      
+            'dln': ['exact'],
+            'fname':['exact'],
+            'lname':['exact'],
+            'city':['exact'],
+            'date_joined':['gt', 'lt', 'exact']
+        }
+    ordering_fields = ['date_joined']    
+              
 class ReserveCustomerView(APIView):
     authentication_classes=[TokenAuthentication]
     permission_classes=[IsAuthenticated]
