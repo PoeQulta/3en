@@ -1,0 +1,55 @@
+
+/* CarRentalPage.css */
+
+/* Add a background color and adjust text color */
+body {
+  background-color: #f8f9fa;
+  color: #343a40;
+}
+
+.car-rental-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.search-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+/* Adjust card layout for CarBox */
+.car-box {
+  border: 1px solid #ddd;
+  padding: 15px;
+  text-align: center;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+}
+
+.car-box:hover {
+  transform: scale(1.05);
+}
+
+.rent-button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  border-radius: 4px;
+}
+
+.rent-button:hover {
+  background-color: #0056b3;
+}
