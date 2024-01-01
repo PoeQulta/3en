@@ -1,7 +1,7 @@
 // SearchBar.js
 import React, { useState } from 'react';
 import './SearchBar.css'; // Import the SearchBar styles
-
+import './CarSearch.css';
 const SearchBar = ({ onSearch }) => {
   const [searchText, setSearchText] = useState('');
 

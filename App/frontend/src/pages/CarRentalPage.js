@@ -3,11 +3,18 @@ import axios from "axios";
 import { useState } from 'react';
 import './CarRentalPage.css'; // Import the CSS file
 import CarBox from './CarBox';
-import SearchBar from './SearchBar';
+import CarSearch from './CarSearch';
 // CarRentalPage.js
 
 
-const carData = [
+// Button component defined within CarRentalPage.js
+const Button = ({ label }) => (
+    <button className="custom-button">
+      {label}
+    </button>
+  );
+  
+  const carData = [
     {
       "plate_id": "123",
       "car_type": "SUV",
@@ -30,14 +37,17 @@ const carData = [
   
   const CarRentalPage = () => {
     const handleSearch = () => {
-      // Add search functionality here
       console.log('Searching for cars...');
     };
   
     return (
       <div className="car-rental-container">
-        <h1 className="header">Car Rental Page</h1>
-        <SearchBar onSearch={handleSearch} />
+        <div className="header">
+          <Button label="Login" />
+          <Button label="Signup" />
+        </div>
+        <h1>Car Rental Page</h1>
+        <CarSearch onSearch={handleSearch} />
         <div className="car-list">
           {carData.map((car, index) => (
             <CarBox
@@ -57,4 +67,3 @@ const carData = [
   };
   
   export default CarRentalPage;
-   
