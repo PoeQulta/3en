@@ -18,7 +18,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, re_path
 from django.conf import settings
-from backend.views import serve_react , RegistrationView, ReserveCustomerView, ReserveStaffView
+from backend.views import serve_react , RegistrationView, ReserveCustomerView, ReserveStaffView, CustomerInfoView
 from rest_framework.authtoken import views
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -26,5 +26,6 @@ urlpatterns = [
     path("api/register/",RegistrationView.as_view()),
     path("api/reserve/",ReserveCustomerView.as_view()),
     path("api/reserve/Staff/",ReserveStaffView.as_view()),
+    path("api/customer/info/",CustomerInfoView.as_view()),
     re_path(r"^(?P<path>.*)$", serve_react, {"document_root": settings.REACT_APP_BUILD_PATH}),
 ]
