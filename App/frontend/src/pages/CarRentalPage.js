@@ -19,7 +19,12 @@ const carData = [
         "office_id": 1,
         "city": "Alex",
         "zip_code": 123456
-      }
+      },
+      "images": [
+        {
+          "img_url": "https://CarImage/dsdda/fdfsidjf.pnh"
+        }
+      ]
     }
   ];
   
@@ -43,6 +48,7 @@ const carData = [
               plateId={car.plate_id}
               yearMade={car.year_made}
               officeDetails={car.office}
+              images={car.images}
             />
           ))}
         </div>
@@ -51,3 +57,4 @@ const carData = [
   };
   
   export default CarRentalPage;
+   
