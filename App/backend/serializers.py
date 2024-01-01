@@ -4,16 +4,8 @@ from backend.models.model_def import Car
 from backend.models.model_def import Office
 from backend.models.model_def import Customer
 from rest_framework import serializers
-from backend.models.model_def import Customer, Reservation
-class ReservationSerializer(serializers.ModelSerializer):
-   class Meta:
-        model = Reservation
-        fields = [
-            "customer_dln", 
-            "car", 
-            "pickup_date", 
-            "return_date", 
-        ] 
+from backend.models.model_def import Customer, Reservation, CarImg,CarStatus,Billing
+
 class CustomerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Customer
@@ -67,9 +59,35 @@ class OfficeSerializer(serializers.ModelSerializer):
             'office_id',
             'city',
             'zip_code',
+        ] 
+class CarImgSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CarImg
+        fields = [
+            'img_url',
         ]  
+class CarStatusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CarStatus
+        fields = [
+            'status_date',
+            'car',
+            'status_val'
+        ] 
+        depth=1 
+class BillingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Billing
+        fields = [
+            'billing_num',
+            'due_date',
+            'fully_paid',
+            'reservation'
+        ] 
+        depth=1 
 class CarSerializer(serializers.ModelSerializer):
     office  = OfficeSerializer()
+    images = CarImgSerializer(source='carimg_set', many=True, read_only=True)
     class Meta:
         model = Car
         fields = [
@@ -79,18 +97,26 @@ class CarSerializer(serializers.ModelSerializer):
             'year_made',
             'color',
             'rate',
-            'office'
-        ]    
+            'office',
+            'images'
+        ]      
+class ReservationSerializer(serializers.ModelSerializer):
+    def __init__(self, *args, **kwargs):
+        NotNest = kwargs.pop("NotNest", None)
 
-class CustomerSerializer(serializers.ModelSerializer):
+        if NotNest is not None:
+            if NotNest == True:
+                self.Meta.depth = 0
+        else:
+            self.Meta.depth = 2
+
+        super(ReservationSerializer, self).__init__(*args, **kwargs)
+
     class Meta:
-        model = Customer
+        model = Reservation
         fields = [
-            'dln',
-            'fname',
-            'lname',
-            'street',
-            'city',
-            'zip_code',
-            'date_joined',
-        ]    
+            "customer_dln", 
+            "car", 
+            "pickup_date", 
+            "return_date", 
+        ]
