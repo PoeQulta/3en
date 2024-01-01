@@ -13,17 +13,24 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-
-#alooooooo
 from django.contrib import admin
 from django.urls import path, re_path
 from django.conf import settings
-from backend.views import serve_react , RegistrationView
+from backend.views import serve_react , RegistrationView ,ReserveCustomerView, ReserveStaffView, \
+ CustomerInfoView, CarSearchView,CustomerSearchView,CarImgView,StatusView, BillingStaffView
 from backend.api.example import ExampleView
 from rest_framework.authtoken import views
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/auth/",views.obtain_auth_token),
     path("api/register/",RegistrationView.as_view()),
+    path("api/cars/search/", CarSearchView.as_view()),
+    path("api/cars/search/Img/", CarImgView.as_view()),
+    path("api/customers/search/", CustomerSearchView.as_view()),
+    path("api/reserve/",ReserveCustomerView.as_view()),
+    path("api/reserve/Staff/",ReserveStaffView.as_view()),
+    path("api/customer/info/",CustomerInfoView.as_view()), 
+    path("api/cars/status/",StatusView.as_view()), 
+    path("api/billing/",BillingStaffView.as_view()), 
     re_path(r"^(?P<path>.*)$", serve_react, {"document_root": settings.REACT_APP_BUILD_PATH}),
 ]

@@ -11,7 +11,7 @@ ADD CONSTRAINT status_unique UNIQUE(car_id,status_val),
 ADD CONSTRAINT car_status FOREIGN KEY(car_id) REFERENCES car(plate_id);
 
 CREATE TABLE office(
-office_id	int PRIMARY KEY,
+office_id	int PRIMARY KEY AUTO_INCREMENT, 
 street varchar(50) NOT NULL,
 city varchar(50) NOT NULL,
 zip_code int(6) NOT NULL
@@ -50,3 +50,7 @@ CREATE TABLE car_img
 ALTER TABLE car_img
 ADD CONSTRAINT car_img FOREIGN KEY(car_id) REFERENCES car(plate_id),
 ADD CONSTRAINT unique_car_img UNIQUE(car_id,img_url);
+
+ALTER TABLE car
+ADD office_id int NOT NULL,
+ADD CONSTRAINT office_car FOREIGN KEY (office_id) REFERENCES office(office_id);
