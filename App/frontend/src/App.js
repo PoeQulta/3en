@@ -12,7 +12,7 @@ import { history } from './helpers/history';
 import HomePage from "./pages/HomePage"
 import LoginPage from "./pages/LoginPage"
 import RegisterPage from "./pages/RegisterPage"
-
+import CarRentalPage from './pages/CarRentalPage.js';
  
 import * as ReactDOM from "react-dom/client";
 import {
@@ -32,6 +32,11 @@ const router = createBrowserRouter([
     path: "/register",
     element: <RegisterPage />,
   },
+  {
+    path: "/carrental",
+    element: <CarRentalPage />,
+  },
+
 ]);
 function App() {
   const token = localStorage.getItem("token");
@@ -39,6 +44,8 @@ function App() {
       setAuthToken(token);
   }
 return(
+
+  
   <React.StrictMode>
     <RouterProvider router={router} />
   </React.StrictMode>
