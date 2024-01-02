@@ -8,7 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.contrib.auth.models import User
-from backend.serializers import RegistrationSerializer,ReservationSerializer, CustomerSerializer
+from backend.serializers import RegistrationSerializer,ReservationSerializer, CustomerSerializer,CarImgSerializer,CarStatusSerializer,BillingSerializer
 from rest_framework import serializers
 from rest_framework import status
 from rest_framework.authtoken.models import Token
@@ -18,10 +18,10 @@ from rest_framework import filters
 from backend.serializers import CarSerializer,Car,Customer
 import django_filters.rest_framework
 from backend.models.model_def import UserCustomerInfo
-from backend.models.model_def import Customer,Reservation
+from backend.models.model_def import Customer,Reservation,CarImg,CarStatus, Billing
 from rest_framework.authentication import TokenAuthentication
 from backend.permissions import IsStaffUser
-
+from backend.filters import ReservationFilter,BillingFilter
 def serve_react(request, path, document_root=None):
     path = posixpath.normpath(path).lstrip("/")
     fullpath = Path(safe_join(document_root, path))
@@ -81,16 +81,22 @@ class CarSearchView(generics.ListAPIView):
     serializer_class = CarSerializer
     filter_backends = [django_filters.rest_framework.DjangoFilterBackend, filters.OrderingFilter]
     filterset_fields = {
-        'model': ['exact'],
+        'model': ['contains'],
         'color':['exact'],
         'car_type':['exact'],
         'year_made':['gt','lt','exact'],
         'rate':['gt','lt','exact'],
-        'office_id':['exact']
+        'office__city':['exact']
         }
     ordering_fields = ['year_made', 'rate']
 
- 
+class CarImgView(generics.ListAPIView):
+    queryset = CarImg.objects.all()
+    serializer_class = CarImgSerializer
+    filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
+    filterset_fields = {
+        'car': ['exact'],
+        }
 
 class CustomerSearchView(generics.ListAPIView):
    
@@ -133,7 +139,7 @@ class ReserveCustomerView(APIView):
         user_id = request.user.id
         customerInfo = UserCustomerInfo.objects.get(user=user_id)
         request.data["customer_dln"] = customerInfo.customer_dln.dln
-        reservationSerializer = ReservationSerializer(data=request.data)
+        reservationSerializer = ReservationSerializer(NotNest=True,data=request.data)
         if reservationSerializer.is_valid():
             reservation = reservationSerializer.save()
             return Response(
@@ -155,35 +161,34 @@ class ReserveCustomerView(APIView):
                 }
             )
 
-class ReserveStaffView(APIView):
+class ReserveStaffView(generics.ListCreateAPIView):
     authentication_classes=[TokenAuthentication]
-    permission_classes=[IsAuthenticated, IsStaffUser]
-    def get(self, request, *args, **kwargs):
-        userReservations = Reservation.objects.all()
-        reservationSerializer = ReservationSerializer(userReservations, many=True)
-        return Response(reservationSerializer.data)
-    def post(self, request, *args, **kwargs):
-        reservationSerializer = ReservationSerializer(data=request.data)
-        if reservationSerializer.is_valid():
-            reservation = reservationSerializer.save()
-            return Response(
-                {
-                    "status": {
-                            "message": "Reservation created",
-                            "code": f"{status.HTTP_200_OK} OK",
-                        }
-                }
-            )
-        else:
-             return Response(
-                {
-                    "error": reservationSerializer.errors,
-                    "status": {
-                            "message": "Serializer Error",
-                            "code": f"{status.HTTP_500_INTERNAL_SERVER_ERROR} INTERNAL SERVER ERROR",
-                        }
-                }
-            )
+    #permission_classes=[IsAuthenticated, IsStaffUser]
+    queryset = Reservation.objects.all()
+    serializer_class = ReservationSerializer
+    filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
+    filterset_class = ReservationFilter
+
+class BillingStaffView(generics.ListCreateAPIView):
+    authentication_classes=[TokenAuthentication]
+    #permission_classes=[IsAuthenticated, IsStaffUser]
+    queryset = Billing.objects.all()
+    serializer_class = BillingSerializer
+    filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
+    filterset_class = BillingFilter
+
+class StatusView(generics.ListCreateAPIView):
+    authentication_classes=[TokenAuthentication]
+    #permission_classes=[IsAuthenticated, IsStaffUser]
+    queryset = CarStatus.objects.all()
+    serializer_class = CarStatusSerializer
+    filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
+    filterset_fields = {
+        'status_date': ['exact'],
+    }
+    ordering_fields = ['status_date'] 
+
+    
 class CustomerInfoView(APIView):
     authentication_classes=[TokenAuthentication]
     permission_classes=[IsAuthenticated]

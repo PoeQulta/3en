@@ -1,0 +1,85 @@
+
+/* CarRentalPage.css */
+
+/* Add a background color and adjust text color */
+body, html {
+  height: 100%;
+  margin: 0;
+}
+body {
+  background-image: url('./images/searchbackground.jpeg'); /* Replace 'your-background-image.jpg' with the path to your image */
+  background-size: cover; /* Cover the entire viewport */
+  background-position: center; /* Center the background image */
+  background-attachment: fixed; /* Make the background image fixed */
+  margin: 0; /* Remove default body margin */
+  font-family: 'Arial', sans-serif; /* Optional: Set a font family */
+}
+
+.car-rental-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.button-container {
+  display: flex;
+  gap: 10px;
+  margin-left: auto; /* This will push the buttons to the right */
+}
+
+.custom-button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+
+.custom-button:hover {
+  background-color: #0056b3;
+}
+
+.search-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+/* Adjust card layout for CarBox */
+.car-box {
+  border: 1px solid #ddd;
+  padding: 15px;
+  text-align: center;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+}
+
+.car-box:hover {
+  transform: scale(1.05);
+}
+
+.rent-button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  border-radius: 4px;
+}
+
+.rent-button:hover {
+  background-color: #0056b3;
+}
