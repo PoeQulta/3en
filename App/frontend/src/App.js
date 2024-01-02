@@ -14,6 +14,7 @@ import LoginPage from "./pages/LoginPage"
 import RegisterPage from "./pages/RegisterPage"
 import CarRentalPage from './pages/CarRentalPage.js';
 import ReservationsPage from './pages/ReservationsPage.js';
+import BillingPage from './pages/BillsPage';
  
 import * as ReactDOM from "react-dom/client";
 import {
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
   {
     path: "/Reservations",
     element: <RouteGuard component={ReservationsPage} />
+  },
+  {
+    path: "/Bills",
+    element: <RouteGuard component={BillingPage} />
   },
   {
     path: "/login",

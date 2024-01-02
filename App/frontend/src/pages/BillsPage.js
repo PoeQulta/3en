@@ -3,21 +3,20 @@ import LogoutUser from "../ApiConsumptionMethods/Logout";
 import axios from "axios";
 import { useState, useEffect } from 'react';
 import './CarRentalPage.css'; // Import the CSS file
-import ReservationBox from './ReservationBox';
-import CarSearch from './CarSearch';
-import CarSearchModal from './AdvancedSearch'
+import BillBox from './BillBox';
 // CarRentalPage.js
   const SearchHandler = (setData) =>
   {
-    axios.get("http://127.0.0.1:8000/api/reserve/").then
+    axios.get("http://127.0.0.1:8000/api/car/Return/").then
     ( response => 
       {
         setData(cardata => ([...response.data]));
+        console.log(response.data)
       }
 
     )
   }
-  const ReservationPage = () => {
+  const BillingPage = () => {
     const handleSearch = () => {
       console.log('Searching for cars...');
     };
@@ -27,24 +26,20 @@ import CarSearchModal from './AdvancedSearch'
       <div className="car-rental-container">
         <div className="header">
           <button className="search-button" onClick={() => {LogoutUser()}}>Logout</button>
-          <button className="search-button" onClick={() => {window.location.href = '/Bills'}}>Bills</button>
+          <button className="search-button" onClick={() => {window.location.href = '/Reservations'}}>Reservations</button>
           <button className="search-button" onClick={() => {window.location.href = '/'}}>Home</button>
         </div>
         <h1> 3en Car Rental</h1>
         <div className="car-list">
-          {CarData.map((resv, index) => (
-            <ReservationBox
+          {CarData.map((bill, index) => (
+            <BillBox
               key={index}
-              carModel={resv.car.model}
-              carType={resv.car.car_type}
-              price={resv.car.rate}
-              plateId={resv.car.plate_id}
-              yearMade={resv.car.year_made}
-              officeDetails={resv.car.office}
-              images={resv.car.images}
-              PickupDate={resv.pickup_date}
-              ReturnDate={resv.return_date}
-              reservationID={resv.reservation_id}
+              carID={bill.reservation.car.plate_id}
+              price={bill.reservation.car.rate}
+              ReturnDate={bill.reservation.return_date}
+              PickupDate={bill.reservation.pickup_date}
+              BillID={bill.billing_num}
+              fully_paid = {bill.fully_paid}
             />
           ))}
         </div>
@@ -52,4 +47,4 @@ import CarSearchModal from './AdvancedSearch'
     );
   };
   
-  export default ReservationPage;
+  export default BillingPage;

@@ -27,7 +27,6 @@ import CarSearchModal from './AdvancedSearch'
       <div className="car-rental-container">
         <div className="header">
           <button className="search-button" onClick={() => {LogoutUser()}}>Logout</button>
-          <button className="search-button" onClick={() => {window.location.href = '/Bills'}}>Bills</button>
           <button className="search-button" onClick={() => {window.location.href = '/'}}>Home</button>
         </div>
         <h1> 3en Car Rental</h1>
@@ -44,7 +43,6 @@ import CarSearchModal from './AdvancedSearch'
               images={resv.car.images}
               PickupDate={resv.pickup_date}
               ReturnDate={resv.return_date}
-              reservationID={resv.reservation_id}
             />
           ))}
         </div>

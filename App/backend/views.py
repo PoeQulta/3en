@@ -132,7 +132,7 @@ class ReserveCustomerView(APIView):
     def get(self, request, *args, **kwargs):
         user_id = request.user.id
         customerInfo = UserCustomerInfo.objects.get(user=user_id)
-        userReservations = Reservation.objects.filter(customer_dln=customerInfo.customer_dln).all()
+        userReservations = Reservation.objects.filter(customer_dln=customerInfo.customer_dln).filter(billing__isnull=True).all()
         reservationSerializer = ReservationSerializer(userReservations, many=True)
         return Response(reservationSerializer.data)
     def post(self, request, *args, **kwargs):
@@ -156,6 +156,55 @@ class ReserveCustomerView(APIView):
                     "error": reservationSerializer.errors,
                     "status": {
                             "message": "Reservation created",
+                            "code": f"{status.HTTP_500_INTERNAL_SERVER_ERROR} INTERNAL SERVER ERROR",
+                        }
+                }
+            )
+class PayBillView(APIView):
+    authentication_classes=[TokenAuthentication]
+    permission_classes=[IsAuthenticated]
+    def post(self, request, *args, **kwargs):
+        user_id = request.user.id
+        bill = Billing.objects.get(billing_num=request.data["billing_num"])
+        bill.fully_paid = True
+        bill.save()
+        return Response(
+            {
+                    "status": {
+                            "message": "Bill Payed",
+                            "code": f"{status.HTTP_200_OK} OK",
+                        }
+                }
+        )
+class ReturnCarView(APIView):
+    authentication_classes=[TokenAuthentication]
+    permission_classes=[IsAuthenticated]
+    def get(self, request, *args, **kwargs):
+        user_id = request.user.id
+        customerInfo = UserCustomerInfo.objects.get(user=user_id)
+        userReservations = Reservation.objects.filter(customer_dln=customerInfo.customer_dln).all()
+        bills = Billing.objects.filter(reservation__in=userReservations)
+        billSerializer = BillingSerializer(bills, many=True)
+        return Response(billSerializer.data)
+    def post(self, request, *args, **kwargs):
+        user_id = request.user.id
+        billSerializer = BillingSerializer(NotNest=True,data=request.data)
+        if billSerializer.is_valid():
+            bill = billSerializer.save()
+            return Response(
+                {
+                    "status": {
+                            "message": "Bill created",
+                            "code": f"{status.HTTP_200_OK} OK",
+                        }
+                }
+            )
+        else:
+             return Response(
+                {
+                    "error": billSerializer.errors,
+                    "status": {
+                            "message": "Bill NOT created",
                             "code": f"{status.HTTP_500_INTERNAL_SERVER_ERROR} INTERNAL SERVER ERROR",
                         }
                 }
