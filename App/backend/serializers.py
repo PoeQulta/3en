@@ -94,9 +94,13 @@ class BillingSerializer(serializers.ModelSerializer):
             'fully_paid',
             'reservation'
         ] 
+        depth=1 
+
 class CarSerializer(serializers.ModelSerializer):
-    office  = OfficeSerializer()
+    office = OfficeSerializer()
     images = CarImgSerializer(source='carimg_set', many=True, read_only=True)
+    status_val = serializers.SerializerMethodField()  
+
     
     class Meta:
         model = Car
@@ -108,8 +112,15 @@ class CarSerializer(serializers.ModelSerializer):
             'color',
             'rate',
             'office',
-            'images'
-        ]      
+            'images',
+            'status_val',  
+        ]
+
+    def get_status_val(self, obj):
+        # This method extracts the status_val from the CarStatus
+        latest_status = obj.carstatus_set.order_by('-status_date').first()
+        return latest_status.status_val if latest_status else None
+
 class ReservationSerializer(serializers.ModelSerializer):
     def __init__(self, *args, **kwargs):
         NotNest = kwargs.pop("NotNest", None)
