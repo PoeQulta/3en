@@ -5,7 +5,14 @@
     align-items: center;
     margin-bottom: 16px;
   }
-  
+  .login-bar {
+    display: flex;
+    margin-top: 50px;
+    margin-left: 400px;
+    margin-right: 400px;
+    align-items: center;
+    margin-bottom: 16px;
+  }
   .search-input {
     flex: 1;
     padding: 8px;

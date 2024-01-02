@@ -81,12 +81,12 @@ class CarSearchView(generics.ListAPIView):
     serializer_class = CarSerializer
     filter_backends = [django_filters.rest_framework.DjangoFilterBackend, filters.OrderingFilter]
     filterset_fields = {
-        'model': ['exact'],
+        'model': ['contains'],
         'color':['exact'],
         'car_type':['exact'],
         'year_made':['gt','lt','exact'],
         'rate':['gt','lt','exact'],
-        'office_id':['exact']
+        'office__city':['exact']
         }
     ordering_fields = ['year_made', 'rate']
 

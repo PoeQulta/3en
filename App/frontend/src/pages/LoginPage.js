@@ -1,7 +1,9 @@
 import setAuthToken from "../ApiConsumptionMethods/setTokenAuth";
 import axios from "axios";
 import { useState } from 'react';
-
+import './CarRentalPage.css'; // Import the CSS file
+import './SearchBar.css'; // Import the SearchBar styles
+import './CarSearch.css';
 const handleSubmit = (username, pass) => {
   // reqres registered sample user
   const loginPayload = {
@@ -34,21 +36,30 @@ function LoginPage() {
   const handlePassChange = (e) => setPassValue(e.target.value);
 
   return (
-    <div style={{
-      backgroundImage: `url("https://c4.wallpaperflare.com/wallpaper/66/25/239/machine-grey-background-volvo-wallpaper-preview.jpg")`,
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      height: '100vh', // Adjust the height as needed
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-    }}>
-      <p>Login </p>
-      <input type="text" value={Uservalue} onChange={handleUserChange} />
-      <input type="password" value={Passvalue} onChange={handlePassChange} />
-      <button onClick={event => handleSubmit(Uservalue, Passvalue)}>Login</button>
+
+    <div>
+      <p style={{"margin-top":"300px"}}></p>
+      <div className="login-bar">
+      <input
+        type="text"
+        className="search-input"
+        placeholder="Username"
+        value={Uservalue} onChange={handleUserChange}
+      />
+      </div>
+      <div className="login-bar">
+      <input
+        type="password"
+        className="search-input"
+        placeholder="Password"
+        value={Passvalue} onChange={handlePassChange}
+      />
+      <button className="search-button" onClick={event => handleSubmit(Uservalue, Passvalue)}>
+        Login
+      </button>
+      </div>
     </div>
+    
   );
 }
 

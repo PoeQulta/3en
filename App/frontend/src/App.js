@@ -22,7 +22,7 @@ import {
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <RouteGuard component={HomePage} />
+    element: <RouteGuard component={CarRentalPage} />
   },
   {
     path: "/login",
@@ -31,10 +31,6 @@ const router = createBrowserRouter([
   {
     path: "/register",
     element: <RegisterPage />,
-  },
-  {
-    path: "/carrental",
-    element: <CarRentalPage />,
   },
 
 ]);

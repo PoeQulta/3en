@@ -1,20 +1,13 @@
 import setAuthToken from "../ApiConsumptionMethods/setTokenAuth";
+import LogoutUser from "../ApiConsumptionMethods/Logout";
 import axios from "axios";
 import { useState } from 'react';
 import './CarRentalPage.css'; // Import the CSS file
 import CarBox from './CarBox';
 import CarSearch from './CarSearch';
+import CarSearchModal from './AdvancedSearch'
 // CarRentalPage.js
-
-
-// Button component defined within CarRentalPage.js
-const Button = ({ label }) => (
-    <button className="custom-button">
-      {label}
-    </button>
-  );
-  
-  const carData = [
+  const carDataTemp = [
     {
       "plate_id": "123",
       "car_type": "SUV",
@@ -34,22 +27,32 @@ const Button = ({ label }) => (
       ]
     }
   ];
-  
+  const SearchHandler = (setData,text) =>
+  {
+    axios.get("http://127.0.0.1:8000/api/cars/search/",{ params: {model__contains: text} }).then
+    ( response => 
+      {
+        setData(cardata => ([...response.data]));
+      }
+
+    )
+  }
   const CarRentalPage = () => {
     const handleSearch = () => {
       console.log('Searching for cars...');
     };
-  
+    const [CarData, setCarDataValue] = useState([]);
+    const [isOpen, setIsOpen] = useState(false);
     return (
       <div className="car-rental-container">
         <div className="header">
-          <Button label="Login" />
-          <Button label="Signup" />
+          <button className="search-button" onClick={() => {LogoutUser()}}>Logout</button>
         </div>
-        <h1>Car Rental Page</h1>
-        <CarSearch onSearch={handleSearch} />
+        <h1> 3en Car Rental</h1>
+        <CarSearch onSearch={(text) => {SearchHandler(setCarDataValue,text)}} />
+        <CarSearchModal setCar={setCarDataValue} isOpen={isOpen} setIsOpen={setIsOpen} />
         <div className="car-list">
-          {carData.map((car, index) => (
+          {CarData.map((car, index) => (
             <CarBox
               key={index}
               carModel={car.model}
