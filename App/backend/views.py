@@ -8,7 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.contrib.auth.models import User
-from backend.serializers import RegistrationSerializer,ReservationSerializer, CustomerSerializer,CarImgSerializer,CarStatusSerializer,BillingSerializer
+from backend.serializers import RegistrationSerializer,ReservationSerializer, CustomerSerializer,CarImgSerializer,CarStatusSerializer,BillingSerializer,CarStatus
 from rest_framework import serializers
 from rest_framework import status
 from rest_framework.authtoken.models import Token
@@ -18,7 +18,7 @@ from rest_framework import filters
 from backend.serializers import CarSerializer,Car,Customer
 import django_filters.rest_framework
 from backend.models.model_def import UserCustomerInfo
-from backend.models.model_def import Customer,Reservation,CarImg,CarStatus, Billing
+from backend.models.model_def import Customer,Reservation,CarImg,CarStatus, Billing,CarStatus
 from rest_framework.authentication import TokenAuthentication
 from backend.permissions import IsStaffUser
 from backend.filters import ReservationFilter,BillingFilter
@@ -86,7 +86,8 @@ class CarSearchView(generics.ListAPIView):
         'car_type':['exact'],
         'year_made':['gt','lt','exact'],
         'rate':['gt','lt','exact'],
-        'office__city':['exact']
+        'office__city':['exact'],
+        'carstatus__status_val': ['exact']
         }
     ordering_fields = ['year_made', 'rate']
 
