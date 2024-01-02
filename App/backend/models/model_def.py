@@ -50,12 +50,19 @@ class CarImg(models.Model):
         managed = False
         db_table = 'car_img'
         unique_together = (('car', 'img_url'),)
+
+
         
 class CarStatus(models.Model):
+    STATUS_Val_CHOICES = [
+        ('available', 'Available'),
+        ('reserved', 'Reserved'),
+        ('in Maintenance', 'In Maintenance'),
+    ]
     status_id = models.IntegerField(primary_key=True)
     status_date = models.DateField()
     car = models.ForeignKey(Car, models.DO_NOTHING)
-    status_val = models.CharField(max_length=500)
+    status_val = models.CharField(max_length=500, choices=STATUS_Val_CHOICES)
 
     class Meta:
         managed = False

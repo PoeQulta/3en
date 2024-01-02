@@ -1,0 +1,1 @@
+ALTER TABLE CAR_STATUS ADD CONSTRAINT check_status_val CHECK (status_val IN ('Available', 'Reserved','In Maintenance'));
