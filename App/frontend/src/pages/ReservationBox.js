@@ -1,8 +1,22 @@
 // CarBox.js
 import React from 'react';
 import './CarBox.css';
-
-const ReservationBox = ({ carModel, carType, price, images, PickupDate,ReturnDate}) => {
+import axios from "axios";
+const ReturnHandler = (ReservationID) =>
+{
+  const payload = {
+    due_date:new Date().toISOString(),
+    fully_paid:false,
+    reservation:ReservationID
+  }
+  axios.post("http://127.0.0.1:8000/api/car/Return/",payload).then
+  (response =>
+    {console.log(response.data)
+      window.location.href = '/Bills';
+    }
+  )
+}
+const ReservationBox = ({ carModel, carType, price, images, PickupDate,ReturnDate, reservationID}) => {
   return (
     <div className="car-box">
       <div className="car-image">
@@ -14,7 +28,7 @@ const ReservationBox = ({ carModel, carType, price, images, PickupDate,ReturnDat
         <p>pickup date: {PickupDate}</p>
         <p>Return date: {ReturnDate}</p>
         <p>Price: {price}/day</p>
-        <button className="rent-button">Return</button>
+        <button className="rent-button" onClick={()=>{ReturnHandler(reservationID)}}>Return</button>
       </div>
     </div>
   );

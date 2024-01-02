@@ -76,6 +76,16 @@ class CarStatusSerializer(serializers.ModelSerializer):
         ] 
         depth=1 
 class BillingSerializer(serializers.ModelSerializer):
+    def __init__(self, *args, **kwargs):
+        NotNest = kwargs.pop("NotNest", None)
+
+        if NotNest is not None:
+            if NotNest == True:
+                self.Meta.depth = 0
+        else:
+            self.Meta.depth = 3
+
+        super(BillingSerializer, self).__init__(*args, **kwargs)
     class Meta:
         model = Billing
         fields = [
@@ -91,6 +101,7 @@ class CarSerializer(serializers.ModelSerializer):
     images = CarImgSerializer(source='carimg_set', many=True, read_only=True)
     status_val = serializers.SerializerMethodField()  
 
+    
     class Meta:
         model = Car
         fields = [
@@ -125,6 +136,7 @@ class ReservationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reservation
         fields = [
+            "reservation_id",
             "customer_dln", 
             "car", 
             "pickup_date", 
