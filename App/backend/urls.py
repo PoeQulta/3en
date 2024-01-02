@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path, re_path
 from django.conf import settings
 from backend.views import serve_react , RegistrationView ,ReserveCustomerView, ReserveStaffView, \
- CustomerInfoView, CarSearchView,CustomerSearchView,CarImgView,StatusView, BillingStaffView
+ CustomerInfoView, CarSearchView,CustomerSearchView,CarImgView,StatusView, BillingStaffView, ReturnCarView,PayBillView
 from backend.api.example import ExampleView
 from rest_framework.authtoken import views
 admin.site.site_title = "3en Admin"
@@ -36,5 +36,7 @@ urlpatterns = [
     path("api/customer/info/",CustomerInfoView.as_view()), 
     path("api/cars/status/",StatusView.as_view()), 
     path("api/billing/",BillingStaffView.as_view()), 
+    path("api/car/Return/",ReturnCarView.as_view()), 
+    path("api/bill/pay/",PayBillView.as_view()), 
     re_path(r"^(?P<path>.*)$", serve_react, {"document_root": settings.REACT_APP_BUILD_PATH}),
 ]

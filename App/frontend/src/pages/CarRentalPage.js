@@ -47,6 +47,7 @@ import CarSearchModal from './AdvancedSearch'
       <div className="car-rental-container">
         <div className="header">
           <button className="search-button" onClick={() => {LogoutUser()}}>Logout</button>
+          <button className="search-button" onClick={() => {window.location.href = '/reservations'}}>Reservations</button>
         </div>
         <h1> 3en Car Rental</h1>
         <CarSearch content={<CarSearchModal setCar={setCarDataValue} isOpen={isOpen} setIsOpen={setIsOpen} />} onSearch={(text) => {SearchHandler(setCarDataValue,text)}} />
