@@ -20,6 +20,10 @@ from backend.views import serve_react , RegistrationView ,ReserveCustomerView, R
  CustomerInfoView, CarSearchView,CustomerSearchView,CarImgView,StatusView, BillingStaffView
 from backend.api.example import ExampleView
 from rest_framework.authtoken import views
+admin.site.site_title = "3en Admin"
+admin.site.site_header = "3en Site Adminstration"
+admin.site.index_title = "Site administration"
+
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/auth/",views.obtain_auth_token),

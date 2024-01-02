@@ -6,11 +6,13 @@ body, html {
   height: 100%;
   margin: 0;
 }
-
 body {
-  background-image: url('./images/searchbackground.jpeg');  /* Replace with your image URL */
-  background-size: cover;
-  background-position: center;
+  background-image: url('./images/searchbackground.jpeg'); /* Replace 'your-background-image.jpg' with the path to your image */
+  background-size: cover; /* Cover the entire viewport */
+  background-position: center; /* Center the background image */
+  background-attachment: fixed; /* Make the background image fixed */
+  margin: 0; /* Remove default body margin */
+  font-family: 'Arial', sans-serif; /* Optional: Set a font family */
 }
 
 .car-rental-container {

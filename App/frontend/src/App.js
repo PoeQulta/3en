@@ -13,6 +13,7 @@ import HomePage from "./pages/HomePage"
 import LoginPage from "./pages/LoginPage"
 import RegisterPage from "./pages/RegisterPage"
 import CarRentalPage from './pages/CarRentalPage.js';
+import ReservationsPage from './pages/ReservationsPage.js';
  
 import * as ReactDOM from "react-dom/client";
 import {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <RouteGuard component={CarRentalPage} />
+  },
+  {
+    path: "/Reservations",
+    element: <RouteGuard component={ReservationsPage} />
   },
   {
     path: "/login",

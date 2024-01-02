@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import './SearchBar.css'; // Import the SearchBar styles
 import './CarSearch.css';
-const SearchBar = ({ onSearch }) => {
+const SearchBar = ({ onSearch, content }) => {
   const [searchText, setSearchText] = useState('');
 
   const handleSearch = () => {
@@ -21,6 +21,7 @@ const SearchBar = ({ onSearch }) => {
       <button className="search-button" onClick={handleSearch}>
         Search
       </button>
+      {content}
     </div>
   );
 };

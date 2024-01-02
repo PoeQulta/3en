@@ -49,8 +49,7 @@ import CarSearchModal from './AdvancedSearch'
           <button className="search-button" onClick={() => {LogoutUser()}}>Logout</button>
         </div>
         <h1> 3en Car Rental</h1>
-        <CarSearch onSearch={(text) => {SearchHandler(setCarDataValue,text)}} />
-        <CarSearchModal setCar={setCarDataValue} isOpen={isOpen} setIsOpen={setIsOpen} />
+        <CarSearch content={<CarSearchModal setCar={setCarDataValue} isOpen={isOpen} setIsOpen={setIsOpen} />} onSearch={(text) => {SearchHandler(setCarDataValue,text)}} />
         <div className="car-list">
           {CarData.map((car, index) => (
             <CarBox
@@ -62,6 +61,7 @@ import CarSearchModal from './AdvancedSearch'
               yearMade={car.year_made}
               officeDetails={car.office}
               images={car.images}
+              carID ={car.plate_id}
             />
           ))}
         </div>
